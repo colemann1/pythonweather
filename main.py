@@ -66,23 +66,37 @@ def get_weekly_report():
     if response.status_code == 200:
         data = response.json()
 
-    # Extract forecast URL from the response
-    forecast_url = data['properties']['forecast']
-    
-    print(f"Forecast URL: {forecast_url}")
-    
-    # Make a request to the 'forecast' URL - https://api.weather.gov/gridpoints/TOP/
-    forecast_response = requests.get(forecast_url)
-    
-    if forecast_response.status_code == 200:
-        forecast_data = forecast_response.json()
+    try:
+        # Extract forecast URL from the response
+        forecast_url = data['properties']['forecast']
         
-        # Print out the forecast
-        print("\nWeather forecast:\n")
-        for period in forecast_data['properties']['periods']:
-            print(f"{period['name']}: {period['detailedForecast']}\n")
-    else:
-        print("Failed to retrieve forecast data.")
+        print(f"Forecast URL: {forecast_url}")
+        
+        # Make a request to the 'forecast' URL - https://api.weather.gov/gridpoints/TOP/
+        forecast_response = requests.get(forecast_url)
+        
+        if forecast_response.status_code == 200:
+            forecast_data = forecast_response.json()
+            
+            # Print out the forecast
+            print("\nWeather forecast:\n")
+            for period in forecast_data['properties']['periods']:
+                print(f"{period['name']}: {period['detailedForecast']}\n")
+        else:
+            print("Failed to retrieve forecast data.")
+    
+    except requests.exceptions.HTTPError as http_err:
+        print(f"\nHTTP error occurred: {http_err}\n")
+    except requests.exceptions.ConnectionError:
+        print("\nError: Unable to connect to the weather service.\n")
+    except requests.exceptions.Timeout:
+        print("\nError: The request timed out.\n")
+    except requests.exceptions.RequestException as err:
+        print(f"\nAn error occurred: {err}\n")
+    except KeyError as key_err:
+        print(f"\nMissing key in the response: {key_err}\n")
+    except Exception as e:
+        print(f"\nAn unexpected error occurred: {e}\n")
 
 
 # View current alerts

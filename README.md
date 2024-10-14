@@ -16,6 +16,9 @@ Functions defined, working:
 - socket
 - sys
 
+## Updates (as of 10/13/2024)
+- Added try / except block to weekly report
+
 ## Updates (as of 10/12/2024)
 - Added alerts, search by state abbreviation (NC, CA, NY,)
     - Added user input checking
@@ -33,5 +36,5 @@ Functions defined, working:
 - Added weekly report
 - Added daily (next 24 hours) report (due to similar code to weekly report)
 
-## Known Issues (as of 10/12/2024)
+## Known Issues (as of 10/13/2024)
 - Precipitation chance not listed in hourly report
